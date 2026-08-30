@@ -11,7 +11,7 @@ import logfire
 from app.experiments import EXPERIMENTS, RAILS_STACKED, COLANG_SNIPPETS
 from app.diagrams import get_diagram
 from app.inference import infer_raw, infer_guarded, lf_span
-from app.actions import detect_pii_in_input, classify_urgency, calculate_risk_score, send_firebase_audit_log
+from app.actions import detect_pii_in_input, classify_urgency, calculate_risk_score
 
 
 def render_experiment(exp_num: int, groq_main: str, groq_guard: str, chat_model: str, guard_model: str):
@@ -131,7 +131,6 @@ def render_experiment(exp_num: int, groq_main: str, groq_guard: str, chat_model:
                         "threat_vectors": risk_meta["threat_vectors"],
                         "latency_ms": ms
                     }
-                    send_firebase_audit_log(audit_event)
 
                     # Emit real-time audit record to Logfire
                     if st.session_state.get("_lf_ready"):

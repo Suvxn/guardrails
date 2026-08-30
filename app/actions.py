@@ -1,6 +1,5 @@
 import re
 import os
-import requests
 from typing import Optional, List, Dict, Any
 from nemoguardrails.actions import action
 
@@ -110,17 +109,3 @@ def calculate_risk_score(prompt: str, pii_detected: List[str], is_blocked: bool,
         "badge_color": badge_color,
         "threat_vectors": threat_vectors or ["None (Clean Input)"],
     }
-
-
-def send_firebase_audit_log(event_data: Dict[str, Any]) -> bool:
-    """Asynchronously dispatches audit record to Realtime Database endpoint if configured."""
-    db_url = os.environ.get("FIREBASE_DATABASE_URL")
-    if not db_url or not db_url.startswith("http"):
-        return False
-
-    try:
-        url = f"{db_url.rstrip('/')}/audit_logs.json"
-        response = requests.post(url, json=event_data, timeout=2)
-        return response.status_code == 200
-    except Exception:
-        return False

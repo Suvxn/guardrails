@@ -37,7 +37,7 @@ Deploying large language models (LLMs) in enterprise production without guardrai
 - **Compliance Violations**: Accidental exposure of Personally Identifiable Information (PII) such as credit cards, SSN, API secrets, or emails.
 - **Unauthorized Advice**: Generating legal, financial, or computer code scripts against corporate governance rules.
 
-The **Accenture Guardrails Enterprise Control Plane** provides a live, interactive laboratory demonstrating how **progressive multi-rail stacking** prevents security failures, computes enterprise threat scores (0.0–10.0 scale), streams real-time telemetry to Pydantic Logfire, and dispatches audit events asynchronously to a Firebase Realtime Database.
+The **Accenture Guardrails Enterprise Control Plane** provides a live, interactive laboratory demonstrating how **progressive multi-rail stacking** prevents security failures, computes enterprise threat scores (0.0–10.0 scale), and streams real-time telemetry to Pydantic Logfire.
 
 ---
 
@@ -52,7 +52,7 @@ The **Accenture Guardrails Enterprise Control Plane** provides a live, interacti
    - `classify_urgency`: Identifies P0/P1 emergency platform outages and prioritizes client support.
    - `sanitize_output`: Intercepts bot responses before client delivery to ensure zero code blocks, hardcoded credentials, or competitor mentions leak out.
 6. **Dynamic Risk Scoring Engine**: Calculates threat vector severity on a 0.0 to 10.0 scale (`LOW RISK`, `ELEVATED`, `CRITICAL`).
-7. **Real-Time Observability**: Streams execution traces and audit payloads to **Pydantic Logfire** and dispatches logs to **Firebase Realtime DB**.
+7. **Real-Time Observability**: Streams execution traces and audit payloads to **Pydantic Logfire**.
 
 ---
 
@@ -65,8 +65,7 @@ The **Accenture Guardrails Enterprise Control Plane** provides a live, interacti
 | **User Interface** | **Streamlit (v1.35+)** | Interactive control plane workbench, custom input bar, and live execution tracker |
 | **Observability** | **Pydantic Logfire (`logfire`)** | Real-time cloud logging, span tracing, and audit telemetry monitoring |
 | **Pipeline Graphics** | **Graphviz** | Dynamic DOT execution flow diagrams rendered natively in Streamlit |
-| **Audit Database** | **Firebase Realtime Database** | Asynchronous REST endpoint for persistent security audit trail storage |
-| **Runtime & Tooling** | **Python 3.11+ / dotenv / requests** | Environment management, regex scanners, and HTTP dispatchers |
+| **Runtime & Tooling** | **Python 3.11+ / dotenv** | Environment management, regex scanners, and execution orchestrator |
 | **Deployment & CI/CD** | **Render Cloud (`render.yaml`) & GitHub Actions (`ci-cd.yml`)** | Automated linting, policy validation, and cloud hosting |
 
 ---
@@ -274,12 +273,11 @@ graph LR
 
 ```
 ControlPlane/
-├── .env                        # API keys, Firebase URL & Logfire token
+├── .env                        # API keys & Logfire token
 ├── .gitignore                  # Git exclusion rules
 ├── requirements.txt            # Python dependencies (NeMo, Streamlit, Logfire, Graphviz)
 ├── README.md                   # Complete technical documentation & guide
 ├── render.yaml                 # Infrastructure Blueprint for Render Cloud deployment
-├── firebase.json               # Security rules schema for Firebase Audit Log DB
 │
 ├── .github/
 │   └── workflows/
@@ -335,7 +333,6 @@ Create a `.env` file in the root directory:
 ```ini
 GROQ_API_KEY=gsk_your_groq_api_key
 GROQ_GUARD_KEY=gsk_your_groq_guardrail_key
-FIREBASE_DATABASE_URL=https://your-firebase-app.firebaseio.com/
 LOGFIRE_TOKEN=your_pydantic_logfire_token
 ```
 
@@ -353,7 +350,7 @@ Open `http://localhost:8501` or `http://localhost:8502` in your browser.
 The project includes a pre-configured [`render.yaml`](file:///c:/Users/Suvxn/OneDrive/Desktop/babita/ControlPlane/render.yaml) Blueprint:
 1. Connect your repository to [Render](https://render.com).
 2. Select **New Blueprint Instance**.
-3. Fill in your environment secrets (`GROQ_API_KEY`, `FIREBASE_DATABASE_URL`, `LOGFIRE_TOKEN`).
+3. Fill in your environment secrets (`GROQ_API_KEY`, `LOGFIRE_TOKEN`).
 4. Click **Deploy**!
 
 ### Continuous Integration (GitHub Actions)

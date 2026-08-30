@@ -11,7 +11,5 @@ services:
         sync: false
       - key: GROQ_GUARD_KEY
         sync: false
-      - key: FIREBASE_DATABASE_URL
-        sync: false
       - key: LOGFIRE_TOKEN
         sync: false
